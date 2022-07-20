@@ -47,7 +47,7 @@ fi
 
 if ["$1" == def]
 then
-  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest=$target_dir/
+  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest="$target_dir/$Previous_dir_format/"
 fi
 
 
@@ -56,11 +56,6 @@ fi
 
 if ["$1" == inc]
 then
-  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest=$target_dir/
+  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest="$target_dir/$Previous_dir_format/"
 fi
-
-
-
-
-
 

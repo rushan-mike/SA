@@ -4,7 +4,7 @@
 
 0 12 1 * * ./backup.sh full
 0 12 * * 0 ./backup.sh def
-0 12 * * * ./backup.sh inc
+0 12 * * 1-6 ./backup.sh inc
 
 
 # 0 12 * * * ./backup.sh
