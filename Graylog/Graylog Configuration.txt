@@ -1,0 +1,85 @@
+Installation pre-requisites:
+- java
+- mongodb
+- elasticsearch
+- epel-release
+- pwgen
+
+
+
+
+yum install java-1.8.0-openjdk-headless.x86_64
+vim /etc/yum.repos.d/mongodb-org.repo
+yum install mongodb-org -y
+
+systemctl enable mongod.service
+systemctl start mongod.service
+
+
+
+rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+vim /etc/yum.repos.d/elasticsearch.repo
+yum install elasticsearch -y
+
+systemctl enable elasticsearch.service
+systemctl start elasticsearch.service
+
+
+
+dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+
+yum install epel-release -y
+yum install pwgen -y
+
+
+
+rpm -Uvh https://packages.graylog2.org/repo/packages/graylog-4.0-repository_latest.rpm
+yum install graylog-server -y
+
+pwgen -N 1 -s 96
+echo -n your-password | shasum -a 256
+
+vim /etc/graylog/server/server.conf
+
+systemctl enable graylog-server.service
+systemctl start graylog-server.service
+
+
+
+
+firewall-cmd --zone=public --add-port=9000/tcp --permanent
+firewall-cmd --reload
+
+setsebool -P httpd_can_network_connect 1
+sudo semanage port -a -t mongod_port_t -p tcp 27017
+sudo semanage port -a -t http_port_t -p tcp 9200
+sudo semanage port -a -t http_port_t -p tcp 9000
+
+
+
+
+sudo systemctl daemon-reload
+
+sudo systemctl restart mongod.service
+sudo systemctl restart elasticsearch.service
+sudo systemctl restart graylog-server.service
+
+sudo systemctl reboot
+
+
+tail -f /var/log/graylog-server/server.log
+
+
+
+https://docs.graylog.org/en/3.0/pages/sidecar.html
+
+https://github.com/Graylog2/collector-sidecar/releases
+
+
+
+
+https://docs.graylog.org/docs/centos
+
+https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-red-hat/
+
+https://www.atlantic.net/vps-hosting/install-graylog-monitoring-server-on-centos-8/
