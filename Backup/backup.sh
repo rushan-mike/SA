@@ -27,21 +27,38 @@ dir_format="${target_dir}/${type}_backup_${day}_${time}"
 
 #creates the target directory if it doesn't exist
 
-ssh root@192.168.200.4 "mkdir -p ${target_dir}"
 ssh root@192.168.200.4 "mkdir -p ${dir_format}"
+
+
 
 
 #full backup
 
-rsync -av $backup_dir/ root@192.168.200.4:$dir_format/
+
+if ["$1" == full]
+then
+  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/
+fi
+
+
 
 #deferential backup
 
-rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest=$target_dir/
+
+if ["$1" == def]
+then
+  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest=$target_dir/
+fi
+
+
 
 #incrimental backup
 
-rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest=$target_dir/
+if ["$1" == inc]
+then
+  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest=$target_dir/
+fi
+
 
 
 
