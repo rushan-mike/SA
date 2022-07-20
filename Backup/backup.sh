@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #path and format of the backup
-backup_dir="/home/student/lab"
+working_dir="/home/student/lab"
 
 target_dir="/srv/rsync/backups"
 
@@ -22,12 +22,14 @@ then
 fi
 
 
-dir_format="${target_dir}/${type}_backup_${day}_${time}"
+dir_format="${type}_backup_${day}_${time}"
+
+backup_target="${target_dir}/${dir_format}"
 
 
 #creates the target directory if it doesn't exist
 
-ssh root@192.168.200.4 "mkdir -p ${dir_format}"
+ssh root@192.168.200.4 "mkdir -p ${backup_target}"
 
 
 
@@ -37,7 +39,7 @@ ssh root@192.168.200.4 "mkdir -p ${dir_format}"
 
 if ["$1" == full]
 then
-  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/
+  rsync -av $working_dir/ root@192.168.200.4:$backup_target/
 fi
 
 
@@ -47,7 +49,7 @@ fi
 
 if ["$1" == def]
 then
-  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest="$target_dir/$Previous_dir_format/"
+  rsync -av $working_dir/ root@192.168.200.4:$backup_target/ --compare-dest="$target_dir/$Previous_backup_target/"
 fi
 
 
@@ -56,6 +58,6 @@ fi
 
 if ["$1" == inc]
 then
-  rsync -av $backup_dir/ root@192.168.200.4:$dir_format/ --compare-dest="$target_dir/$Previous_dir_format/"
+  rsync -av $working_dir/ root@192.168.200.4:$backup_target/ --compare-dest="$target_dir/$Previous_backup_target/"
 fi
 
