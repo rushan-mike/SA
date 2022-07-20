@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# 
-
 # crontab -e
 
 0 12 * * 0 /every-four.sh && /backup.sh full
