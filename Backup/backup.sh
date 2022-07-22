@@ -75,6 +75,9 @@ if ["$type" == inc]; then
   find "${target_dir}" -type d -mtime -1 -exec Previous_backup_target={} \;
 
   rsync -av $working_dir/ root@192.168.200.4:$backup_target/ --compare-dest="$target_dir/$Previous_backup_target/"
-  
+
 fi
 
+
+
+# execute the neccesary commands on the remote server to complete the script
