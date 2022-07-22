@@ -81,3 +81,6 @@ fi
 
 
 # execute the neccesary commands on the remote server to complete the script
+    # target check
+    # def pre target
+    # inc pre target
